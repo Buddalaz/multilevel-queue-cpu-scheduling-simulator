@@ -9,6 +9,10 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
 import model.ProcessSimulator;
+import static model.Utility.FCFS_CPU_SCHEDULING;
+import static model.Utility.RR_CPU_SCHEDULING;
+import static model.Utility.SJF_CPU_SCHEDULING;
+import static model.Utility.SRTF_CPU_SCHEDULING;
 
 /**
  *
@@ -155,28 +159,31 @@ public class Simulator extends javax.swing.JFrame {
         for (ProcessSimulator proList : processes) {
             System.out.println("Process" + proList.getProcessId() + "Arrival" + proList.getArrivalTime() + "Brust" + proList.getBurstTime());
         }
-        
+
         System.out.println("--------------------After-------------------------");
-        
-        
+
         switch (multiQLMethod) {
-            case "FCFS":
+            case FCFS_CPU_SCHEDULING:
                 System.out.println("The CPU schedule Method is: " + multiQLMethod);
                 // Call FCFS method in controller
                 SimulatorController.calculateFCFS(processes);
                 break;
-            case "SJF":
+            case SJF_CPU_SCHEDULING:
                 System.out.println("The CPU schedule Method is: " + multiQLMethod);
                 // Call SJF method in controller
                 SimulatorController.calculateSJF(processes);
                 break;
-            case "SRTF":
+            case SRTF_CPU_SCHEDULING:
                 System.out.println("The CPU schedule Method is: " + multiQLMethod);
                 // Call SRTF method in controller
                 SimulatorController.calculateSRTF(processes);
                 break;
-            case "RR":
+            case RR_CPU_SCHEDULING:
                 System.out.println("The CPU schedule Method is: " + multiQLMethod);
+                int timeQuantum = 4; // Set your desired time quantum
+
+                // Call the controller method for RR scheduling
+                SimulatorController.roundRobinScheduling(processes, timeQuantum);
                 break;
             default:
                 throw new AssertionError();

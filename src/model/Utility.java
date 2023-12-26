@@ -9,5 +9,8 @@ package model;
  * @author ASUS
  */
 public class Utility {
-    
+    public static final String FCFS_CPU_SCHEDULING = "FCFS";
+    public static final String SJF_CPU_SCHEDULING = "SJF";
+    public static final String SRTF_CPU_SCHEDULING = "SRTF";
+    public static final String RR_CPU_SCHEDULING = "RR";
 }

@@ -13,8 +13,8 @@ import model.ProcessSimulator;
  * @author ASUS
  */
 public class SimulatorController {
-    
-     public static void calculateFCFS(List<ProcessSimulator> processes) {
+
+    public static void calculateFCFS(List<ProcessSimulator> processes) {
         int n = processes.size();
         int[] waitingTime = new int[n];
         int[] turnaroundTime = new int[n];
@@ -34,10 +34,10 @@ public class SimulatorController {
 
         // Displaying results in console
         for (int i = 0; i < n; i++) {
-            System.out.println("Process " + processes.get(i).getProcessId() +
-                    "  Complete Time: " + turnaroundTime[i] +
-                    "  Waiting Time: " + waitingTime[i] +
-                    "  Turnaround Time: " + turnaroundTime[i]);
+            System.out.println("Process " + processes.get(i).getProcessId()
+                    + "  Complete Time: " + turnaroundTime[i]
+                    + "  Waiting Time: " + waitingTime[i]
+                    + "  Turnaround Time: " + turnaroundTime[i]);
         }
 
         // Calculate average waiting time and average turnaround time
@@ -55,8 +55,8 @@ public class SimulatorController {
         System.out.println("Average Waiting Time: " + avgWaitingTime);
         System.out.println("Average Turnaround Time: " + avgTurnaroundTime);
     }
-     
-     public static void calculateSJF(List<ProcessSimulator> processes) {
+
+    public static void calculateSJF(List<ProcessSimulator> processes) {
         int n = processes.size();
         int[] waitingTime = new int[n];
         int[] turnaroundTime = new int[n];
@@ -79,10 +79,10 @@ public class SimulatorController {
 
         // Displaying results in console
         for (int i = 0; i < n; i++) {
-            System.out.println("Process " + processes.get(i).getProcessId() +
-                    "  Complete Time: " + turnaroundTime[i] +
-                    "  Waiting Time: " + waitingTime[i] +
-                    "  Turnaround Time: " + turnaroundTime[i]);
+            System.out.println("Process " + processes.get(i).getProcessId()
+                    + "  Complete Time: " + turnaroundTime[i]
+                    + "  Waiting Time: " + waitingTime[i]
+                    + "  Turnaround Time: " + turnaroundTime[i]);
         }
 
         // Calculate average waiting time and average turnaround time
@@ -100,8 +100,8 @@ public class SimulatorController {
         System.out.println("Average Waiting Time: " + avgWaitingTime);
         System.out.println("Average Turnaround Time: " + avgTurnaroundTime);
     }
-     
-     public static void calculateSRTF(List<ProcessSimulator> processes) {
+
+    public static void calculateSRTF(List<ProcessSimulator> processes) {
         int n = processes.size();
         int[] remainingTime = new int[n];
         int[] waitingTime = new int[n];
@@ -151,10 +151,77 @@ public class SimulatorController {
 
         // Displaying results in console
         for (int i = 0; i < n; i++) {
-            System.out.println("Process " + processes.get(i).getProcessId() +
-                    "  Complete Time: " + (processes.get(i).getArrivalTime() + turnaroundTime[i]) +
-                    "  Waiting Time: " + waitingTime[i] +
-                    "  Turnaround Time: " + turnaroundTime[i]);
+            System.out.println("Process " + processes.get(i).getProcessId()
+                    + "  Complete Time: " + (processes.get(i).getArrivalTime() + turnaroundTime[i])
+                    + "  Waiting Time: " + waitingTime[i]
+                    + "  Turnaround Time: " + turnaroundTime[i]);
+        }
+
+        // Calculate average waiting time and average turnaround time
+        double avgWaitingTime = 0;
+        double avgTurnaroundTime = 0;
+
+        for (int i = 0; i < n; i++) {
+            avgWaitingTime += waitingTime[i];
+            avgTurnaroundTime += turnaroundTime[i];
+        }
+
+        avgWaitingTime /= n;
+        avgTurnaroundTime /= n;
+
+        System.out.println("Average Waiting Time: " + avgWaitingTime);
+        System.out.println("Average Turnaround Time: " + avgTurnaroundTime);
+    }
+
+    public static void roundRobinScheduling(List<ProcessSimulator> processes, int timeQuantum) {
+        int n = processes.size();
+        int[] remainingTime = new int[n];
+        int[] completionTime = new int[n];
+        int[] waitingTime = new int[n];
+        int[] turnaroundTime = new int[n];
+
+        for (int i = 0; i < n; i++) {
+            remainingTime[i] = processes.get(i).getBurstTime();
+        }
+
+        int currentTime = 0;
+        while (true) {
+            boolean done = true;
+
+            for (int i = 0; i < n; i++) {
+                if (remainingTime[i] > 0) {
+                    done = false;
+
+                    if (remainingTime[i] > timeQuantum) {
+                        currentTime += timeQuantum;
+                        remainingTime[i] -= timeQuantum;
+                    } else {
+                        currentTime += remainingTime[i];
+                        completionTime[i] = currentTime;
+                        remainingTime[i] = 0;
+                    }
+                }
+            }
+
+            if (done) {
+                break;
+            }
+        }
+
+        for (int i = 0; i < n; i++) {
+            turnaroundTime[i] = completionTime[i] - processes.get(i).getArrivalTime();
+            waitingTime[i] = turnaroundTime[i] - processes.get(i).getBurstTime();
+        }
+
+        // Displaying results in console
+        System.out.println("Process\tArrival\tBurst\tComplete\tWaiting\tTurnaround");
+        for (int i = 0; i < n; i++) {
+            System.out.println(processes.get(i).getProcessId() + "\t"
+                    + processes.get(i).getArrivalTime() + "\t"
+                    + processes.get(i).getBurstTime() + "\t"
+                    + completionTime[i] + "\t\t"
+                    + waitingTime[i] + "\t\t"
+                    + turnaroundTime[i]);
         }
 
         // Calculate average waiting time and average turnaround time
