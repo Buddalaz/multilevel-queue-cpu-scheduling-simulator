@@ -9,6 +9,7 @@ import java.util.ArrayList;
 import java.util.List;
 import javax.swing.table.DefaultTableModel;
 import model.ProcessSimulator;
+import model.TableModelDisplay;
 import static model.Utility.FCFS_CPU_SCHEDULING;
 import static model.Utility.RR_CPU_SCHEDULING;
 import static model.Utility.SJF_CPU_SCHEDULING;
@@ -41,13 +42,16 @@ public class Simulator extends javax.swing.JFrame {
         jTable1 = new javax.swing.JTable();
         jLabel1 = new javax.swing.JLabel();
         jLabel2 = new javax.swing.JLabel();
-        jTextField1 = new javax.swing.JTextField();
-        jTextField2 = new javax.swing.JTextField();
+        txtAWT = new javax.swing.JTextField();
+        txtATAT = new javax.swing.JTextField();
         cmbMultiSimulates = new javax.swing.JComboBox<>();
         btnSimulate = new javax.swing.JButton();
         jTextField3 = new javax.swing.JTextField();
         jButton2 = new javax.swing.JButton();
         jButton3 = new javax.swing.JButton();
+        txtQuantumSize = new javax.swing.JTextField();
+        jLabel3 = new javax.swing.JLabel();
+        jLabel4 = new javax.swing.JLabel();
 
         setDefaultCloseOperation(javax.swing.WindowConstants.EXIT_ON_CLOSE);
 
@@ -56,9 +60,9 @@ public class Simulator extends javax.swing.JFrame {
 
         jTable1.setModel(new javax.swing.table.DefaultTableModel(
             new Object [][] {
-                {"a",  new Integer(0),  new Integer(3),  new Integer(3),  new Integer(0),  new Integer(3)},
-                {"b",  new Integer(2),  new Integer(2),  new Integer(5),  new Integer(1),  new Integer(3)},
-                {"c",  new Integer(3),  new Integer(4),  new Integer(9),  new Integer(2),  new Integer(6)}
+                {"a",  new Integer(0),  new Integer(3), null, null, null},
+                {"b",  new Integer(2),  new Integer(2), null, null, null},
+                {"c",  new Integer(3),  new Integer(4), null, null, null}
             },
             new String [] {
                 "Process", "Arrival", "Burst", "Complete", "Waiting", "Turnaround"
@@ -74,32 +78,30 @@ public class Simulator extends javax.swing.JFrame {
         });
         jScrollPane1.setViewportView(jTable1);
 
-        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 18, 504, 359));
+        jPanel1.add(jScrollPane1, new org.netbeans.lib.awtextra.AbsoluteConstraints(6, 18, 530, 359));
 
         jLabel1.setText("Average Turn Around Time :");
-        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 100, -1, 43));
+        jPanel1.add(jLabel1, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 100, -1, 43));
 
         jLabel2.setText("Average Waiting Time :");
-        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(520, 40, -1, 43));
+        jPanel1.add(jLabel2, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 40, -1, 43));
 
-        jTextField1.setText("3.166666665");
-        jTextField1.addActionListener(new java.awt.event.ActionListener() {
+        txtAWT.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField1ActionPerformed(evt);
+                txtAWTActionPerformed(evt);
             }
         });
-        jPanel1.add(jTextField1, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 50, 180, -1));
+        jPanel1.add(txtAWT, new org.netbeans.lib.awtextra.AbsoluteConstraints(780, 50, 180, -1));
 
-        jTextField2.setText("7.166666666666667");
-        jTextField2.addActionListener(new java.awt.event.ActionListener() {
+        txtATAT.addActionListener(new java.awt.event.ActionListener() {
             public void actionPerformed(java.awt.event.ActionEvent evt) {
-                jTextField2ActionPerformed(evt);
+                txtATATActionPerformed(evt);
             }
         });
-        jPanel1.add(jTextField2, new org.netbeans.lib.awtextra.AbsoluteConstraints(700, 110, 177, -1));
+        jPanel1.add(txtATAT, new org.netbeans.lib.awtextra.AbsoluteConstraints(780, 110, 177, -1));
 
         cmbMultiSimulates.setModel(new javax.swing.DefaultComboBoxModel<>(new String[] { "FCFS", "SJF", "SRTF", "RR" }));
-        jPanel1.add(cmbMultiSimulates, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 170, 100, 30));
+        jPanel1.add(cmbMultiSimulates, new org.netbeans.lib.awtextra.AbsoluteConstraints(550, 190, 100, 30));
 
         btnSimulate.setText("Simulate");
         btnSimulate.addActionListener(new java.awt.event.ActionListener() {
@@ -107,10 +109,10 @@ public class Simulator extends javax.swing.JFrame {
                 btnSimulateActionPerformed(evt);
             }
         });
-        jPanel1.add(btnSimulate, new org.netbeans.lib.awtextra.AbsoluteConstraints(740, 170, 95, 32));
+        jPanel1.add(btnSimulate, new org.netbeans.lib.awtextra.AbsoluteConstraints(870, 190, 95, 32));
 
         jTextField3.setText("a    b     c    d    e      f\n0    3     5    9    12    17   24 ");
-        jPanel1.add(jTextField3, new org.netbeans.lib.awtextra.AbsoluteConstraints(570, 220, 280, 130));
+        jPanel1.add(jTextField3, new org.netbeans.lib.awtextra.AbsoluteConstraints(620, 270, 280, 130));
 
         jButton2.setText("Add");
         jButton2.addActionListener(new java.awt.event.ActionListener() {
@@ -118,22 +120,29 @@ public class Simulator extends javax.swing.JFrame {
                 jButton2ActionPerformed(evt);
             }
         });
-        jPanel1.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(580, 360, 80, -1));
+        jPanel1.add(jButton2, new org.netbeans.lib.awtextra.AbsoluteConstraints(600, 410, 80, -1));
 
         jButton3.setText("Remove");
-        jPanel1.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(760, 360, -1, -1));
+        jPanel1.add(jButton3, new org.netbeans.lib.awtextra.AbsoluteConstraints(840, 410, -1, -1));
+        jPanel1.add(txtQuantumSize, new org.netbeans.lib.awtextra.AbsoluteConstraints(710, 190, 120, 30));
+
+        jLabel3.setFont(new java.awt.Font("Segoe UI", 1, 12)); // NOI18N
+        jLabel3.setText("Enter Quantum Size");
+        jPanel1.add(jLabel3, new org.netbeans.lib.awtextra.AbsoluteConstraints(710, 160, 120, 20));
+
+        jLabel4.setFont(new java.awt.Font("Segoe UI", 1, 18)); // NOI18N
+        jLabel4.setText("Gantt Chart");
+        jPanel1.add(jLabel4, new org.netbeans.lib.awtextra.AbsoluteConstraints(620, 240, 130, -1));
 
         javax.swing.GroupLayout layout = new javax.swing.GroupLayout(getContentPane());
         getContentPane().setLayout(layout);
         layout.setHorizontalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 915, Short.MAX_VALUE)
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 1010, Short.MAX_VALUE)
         );
         layout.setVerticalGroup(
             layout.createParallelGroup(javax.swing.GroupLayout.Alignment.LEADING)
-            .addGroup(layout.createSequentialGroup()
-                .addComponent(jPanel1, javax.swing.GroupLayout.PREFERRED_SIZE, 396, javax.swing.GroupLayout.PREFERRED_SIZE)
-                .addGap(0, 0, Short.MAX_VALUE))
+            .addComponent(jPanel1, javax.swing.GroupLayout.DEFAULT_SIZE, 454, Short.MAX_VALUE)
         );
 
         pack();
@@ -143,7 +152,7 @@ public class Simulator extends javax.swing.JFrame {
     private void btnSimulateActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_btnSimulateActionPerformed
         // TODO add your handling code here:
         String multiQLMethod = cmbMultiSimulates.getSelectedItem().toString();
-        System.out.println("Selected Item is: " + multiQLMethod);
+//        System.out.println("Selected Item is: " + multiQLMethod);
 
         // Get data from the table
         DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
@@ -156,34 +165,37 @@ public class Simulator extends javax.swing.JFrame {
             processes.add(new ProcessSimulator(processId, arrivalTime, burstTime));
         }
 
-        for (ProcessSimulator proList : processes) {
-            System.out.println("Process" + proList.getProcessId() + "Arrival" + proList.getArrivalTime() + "Brust" + proList.getBurstTime());
-        }
-
+//        for (ProcessSimulator proList : processes) {
+//            System.out.println("Process" + proList.getProcessId() + "Arrival" + proList.getArrivalTime() + "Brust" + proList.getBurstTime());
+//        }
         System.out.println("--------------------After-------------------------");
 
         switch (multiQLMethod) {
             case FCFS_CPU_SCHEDULING:
-                System.out.println("The CPU schedule Method is: " + multiQLMethod);
+//                System.out.println("The CPU schedule Method is: " + multiQLMethod);
                 // Call FCFS method in controller
-                SimulatorController.calculateFCFS(processes);
+                List<TableModelDisplay> calculateFCFSOutputList = SimulatorController.calculateFCFS(processes);
+                setCPUSchedulingOutput(calculateFCFSOutputList);
                 break;
             case SJF_CPU_SCHEDULING:
-                System.out.println("The CPU schedule Method is: " + multiQLMethod);
+//                System.out.println("The CPU schedule Method is: " + multiQLMethod);
                 // Call SJF method in controller
-                SimulatorController.calculateSJF(processes);
+                List<TableModelDisplay> calculateSJF = SimulatorController.calculateSJF(processes);
+                setCPUSchedulingOutput(calculateSJF);
                 break;
             case SRTF_CPU_SCHEDULING:
-                System.out.println("The CPU schedule Method is: " + multiQLMethod);
-                // Call SRTF method in controller
-                SimulatorController.calculateSRTF(processes);
+//                System.out.println("The CPU schedule Method is: " + multiQLMethod);
+            // Call SRTF method in controller
+            List<TableModelDisplay> calculateSRTF = SimulatorController.calculateSRTF(processes);
+                setCPUSchedulingOutput(calculateSRTF);
                 break;
             case RR_CPU_SCHEDULING:
-                System.out.println("The CPU schedule Method is: " + multiQLMethod);
-                int timeQuantum = 4; // Set your desired time quantum
-
-                // Call the controller method for RR scheduling
-                SimulatorController.roundRobinScheduling(processes, timeQuantum);
+//                System.out.println("The CPU schedule Method is: " + multiQLMethod);
+                int timeQuantum = Integer.parseInt(txtQuantumSize.getText()); // get the quantum time from textField
+//                System.out.println(timeQuantum);
+            // Call the controller method for RR scheduling
+            List<TableModelDisplay> roundRobinScheduling = SimulatorController.roundRobinScheduling(processes, timeQuantum);
+                setCPUSchedulingOutput(roundRobinScheduling);
                 break;
             default:
                 throw new AssertionError();
@@ -195,13 +207,13 @@ public class Simulator extends javax.swing.JFrame {
         // TODO add your handling code here:
     }//GEN-LAST:event_jButton2ActionPerformed
 
-    private void jTextField2ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField2ActionPerformed
+    private void txtATATActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtATATActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField2ActionPerformed
+    }//GEN-LAST:event_txtATATActionPerformed
 
-    private void jTextField1ActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextField1ActionPerformed
+    private void txtAWTActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_txtAWTActionPerformed
         // TODO add your handling code here:
-    }//GEN-LAST:event_jTextField1ActionPerformed
+    }//GEN-LAST:event_txtAWTActionPerformed
 
     /**
      * @param args the command line arguments
@@ -239,6 +251,43 @@ public class Simulator extends javax.swing.JFrame {
         });
     }
 
+    private void setCPUSchedulingOutput(List<TableModelDisplay> calculateCPUScheduling) {
+        DefaultTableModel model = (DefaultTableModel) jTable1.getModel();
+        int rowCount = model.getRowCount();
+
+        TableModelDisplay newData = null;
+
+        for (int i = 0; i < rowCount; i++) {
+            // Get the existing data in the row
+            Object process = model.getValueAt(i, 0);
+            Object arrival = model.getValueAt(i, 1);
+            Object burst = model.getValueAt(i, 2);
+
+            // Get the corresponding TableModelDisplay object from the list
+            newData = calculateCPUScheduling.get(i);
+
+            // Get the data for Complete, Waiting, and Turnaround times
+            Object complete = newData.getCompleteTime();
+            Object waiting = newData.getWaitingTime();
+            Object turnaround = newData.getTurnAroundTime();
+
+            // Update the row with the new data
+            model.setValueAt(complete, i, 3); // Update "Complete" column
+            model.setValueAt(waiting, i, 4); // Update "Waiting" column
+            model.setValueAt(turnaround, i, 5); // Update "Turnaround" column
+        }
+
+        String awtString = String.valueOf(newData.getAverageWaitingTime());
+        String atatString = String.valueOf(newData.getAvarageTurnAroundTime());
+
+        System.out.println(awtString);
+        System.out.println(atatString);
+
+        txtAWT.setText(awtString);
+        txtATAT.setText(atatString);
+
+    }
+
     // Variables declaration - do not modify//GEN-BEGIN:variables
     private javax.swing.JButton btnSimulate;
     private javax.swing.JComboBox<String> cmbMultiSimulates;
@@ -246,11 +295,14 @@ public class Simulator extends javax.swing.JFrame {
     private javax.swing.JButton jButton3;
     private javax.swing.JLabel jLabel1;
     private javax.swing.JLabel jLabel2;
+    private javax.swing.JLabel jLabel3;
+    private javax.swing.JLabel jLabel4;
     private javax.swing.JPanel jPanel1;
     private javax.swing.JScrollPane jScrollPane1;
     private javax.swing.JTable jTable1;
-    private javax.swing.JTextField jTextField1;
-    private javax.swing.JTextField jTextField2;
     private javax.swing.JTextField jTextField3;
+    private javax.swing.JTextField txtATAT;
+    private javax.swing.JTextField txtAWT;
+    private javax.swing.JTextField txtQuantumSize;
     // End of variables declaration//GEN-END:variables
 }
